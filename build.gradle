@@ -1,5 +1,27 @@
-plugins {
-    id 'java'
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.2"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'client.ClientApp'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 group 'org.example'
@@ -7,6 +29,16 @@ group 'org.example'
 repositories {
     mavenCentral()
 }
+
+task customFatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'client.ClientApp'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 
 dependencies {
     implementation 'org.json:json:20220320'

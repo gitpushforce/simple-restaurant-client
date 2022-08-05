@@ -24,7 +24,7 @@ public class ClientApp {
         int threads = in.nextInt();
 
         for (int i = 1; i <= threads; i++) {
-            System.out.println("Select an action for thread " + i);
+            System.out.println("Select an action number for thread " + i);
             System.out.println("1. Show all items in a table");
             System.out.println("2. Show specified order");
             System.out.println("3. create order");
